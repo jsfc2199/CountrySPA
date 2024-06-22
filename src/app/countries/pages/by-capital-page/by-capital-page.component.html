@@ -9,10 +9,6 @@
   <div class="col">
     <hr />
     tabla de resultados
-    <ul>
-      <li *ngFor="let country of countries">
-        {{country.capital}}
-      </li>
-    </ul>
+   <countries-country-table [countries] = "countries"></countries-country-table>
   </div>
 </div>
