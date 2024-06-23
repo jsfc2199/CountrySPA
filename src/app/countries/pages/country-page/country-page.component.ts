@@ -12,23 +12,25 @@ export class CountryPageComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private countriesService: CountriesService) {}
+    private countriesService: CountriesService
+  ) {}
 
-  country?: Country
+  country?: Country;
   ngOnInit(): void {
     this.activatedRoute.params
-    .pipe(
-      //switch map recibe el valor anterior "params" y regresa un nuevo observable
-      //es decir no estamos suscribiendo al resultado del observable que llame el switch map
-      switchMap(({id}) => this.countriesService.searchCountryByAlphaCode(id))
-    )
-    .subscribe((country) =>{
-      if(!country){
-        return this.router.navigateByUrl('')
-      }
-
-      return this.country=country
-
-    });
+      .pipe(
+        //switch map recibe el valor anterior "params" y regresa un nuevo observable
+        //es decir no estamos suscribiendo al resultado del observable que llame el switch map
+        switchMap(({ id }) =>
+          this.countriesService.searchCountryByAlphaCode(id)
+        )
+      )
+      .subscribe((country) => {
+        if (!country) {
+          this.router.navigateByUrl('');
+        } else {
+          this.country = country;
+        }
+      });
   }
 }
