@@ -15,11 +15,14 @@ export class ByCapitalPageComponent {
   public countries: Country[] = []
 
   public countriesSubscription: Subscription = new Subscription
+  isLoading: boolean = false
 
   searchByCapital(term: string){
+    this.isLoading = true
     this.countriesSubscription = this.countriesService.searchCapital(term)
     .subscribe((countries) => {
       this.countries = countries
+      this.isLoading = false
     })
   }
 

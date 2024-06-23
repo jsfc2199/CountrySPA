@@ -10,13 +10,16 @@ import { Subscription } from 'rxjs';
 export class ByCountryPageComponent {
 
   countries: Country[] = []
+  isLoading:boolean = false
   constructor(private countriesService: CountriesService){}
   public countriesSubscription: Subscription = new Subscription
 
   searchByCountry(term: string){
+    this.isLoading = true
     this.countriesSubscription = this.countriesService.searchCountry(term)
     .subscribe((countries) => {
       this.countries = countries
+      this.isLoading = false
     })
   }
 

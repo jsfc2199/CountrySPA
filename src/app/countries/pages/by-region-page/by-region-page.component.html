@@ -8,7 +8,7 @@
 <div class="row">
   <div class="col">
     <hr />
-    tabla de resultados
+    <shared-loading-spinner *ngIf="isLoading"></shared-loading-spinner>
    <countries-country-table [countries] = "countries"></countries-country-table>
   </div>
 </div>
