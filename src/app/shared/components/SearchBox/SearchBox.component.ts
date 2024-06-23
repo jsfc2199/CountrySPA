@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Subject, debounceTime } from 'rxjs';
+import { Subject, Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'shared-search-box',
@@ -11,8 +11,10 @@ export class SearchBoxComponent {
   //observable "manual"
   private debouncer: Subject<string> = new Subject();
 
+  debounceSubscription: Subscription = new Subscription()
+
   ngOnInit(): void {
-    this.debouncer
+    this.debounceSubscription = this.debouncer
     .pipe(
       debounceTime(500) //si por 2 segundos no se emiten valores, lo emitirá con lo que haya
     )
@@ -37,5 +39,9 @@ export class SearchBoxComponent {
   onKeyPress(term: string) {
     //debounce para que si el usuario escribe pero no da enter, al cabo de un tiempo haga la búsqueda
     this.debouncer.next(term)
+  }
+
+  ngOnDestroy(): void {
+    this.debounceSubscription.unsubscribe()
   }
 }
