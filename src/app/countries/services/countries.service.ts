@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { Country } from '../interfaces/country.interface';
 
 @Injectable({
@@ -14,5 +14,8 @@ export class CountriesService {
 
   searchCapital(term: string): Observable<Country[]> {
     return this.http.get<Country[]>(`${this.apiURL}/capital/${term}`)
+    .pipe(
+      catchError(error => of([])) //regresamos un observable como arreglo vacio
+    )
   }
 }
