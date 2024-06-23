@@ -16,27 +16,32 @@ export class CountriesService {
     byRegion: { region: '', countries:[] },
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.loadFromLocalStorage()
+  }
 
   searchCapital(term: string): Observable<Country[]> {
     return this.getCountriesRequest(`${this.apiURL}/capital/${term}`)
     .pipe(
       //tap sirve para efectos secundarios y no influye en lo que retorna el operador. Solo es para alterar otros valores fuera de este
-      tap( countries => this.cacheStore.byCapital = { term,  countries})
+      tap( countries => this.cacheStore.byCapital = { term,  countries}),
+      tap( ()  => this.saveToLocalStorage())
     );
   }
 
   searchRegion(term: Region): Observable<Country[]> {
     return this.getCountriesRequest(`${this.apiURL}/region/${term}`)
     .pipe(
-      tap( countries => this.cacheStore.byRegion = { region: term,  countries})
+      tap( countries => this.cacheStore.byRegion = { region: term,  countries}),
+      tap( ()  => this.saveToLocalStorage())
     );
   }
 
   searchCountry(term: string): Observable<Country[]> {
     return this.getCountriesRequest(`${this.apiURL}/name/${term}`)
     .pipe(
-      tap( countries => this.cacheStore.byCountries = { term,  countries})
+      tap( countries => this.cacheStore.byCountries = { term,  countries}),
+      tap( ()  => this.saveToLocalStorage())
     );
   }
 
@@ -53,5 +58,15 @@ export class CountriesService {
       catchError((error) => of([]))
       // delay(2000), //ya no lo ocupamos por el debounce
     );
+  }
+
+  private saveToLocalStorage(){
+    localStorage.setItem('cacheStore', JSON.stringify(this.cacheStore))
+  }
+
+  private loadFromLocalStorage(){
+    if(!localStorage.getItem('cacheStore')) return
+
+    this.cacheStore = JSON.parse(localStorage.getItem('cacheStore')!)
   }
 }
