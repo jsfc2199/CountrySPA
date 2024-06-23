@@ -11,7 +11,14 @@ export class ByCountryPageComponent {
 
   countries: Country[] = []
   isLoading:boolean = false
+  initialValue: string = ''
+
   constructor(private countriesService: CountriesService){}
+  ngOnInit(): void {
+    this.countries = this.countriesService.cacheStore.byCountries.countries
+    this.initialValue = this.countriesService.cacheStore.byCountries.term
+
+  }
   public countriesSubscription: Subscription = new Subscription
 
   searchByCountry(term: string){

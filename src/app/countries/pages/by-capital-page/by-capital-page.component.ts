@@ -10,12 +10,19 @@ import { Subscription } from 'rxjs';
 })
 export class ByCapitalPageComponent {
 
-  constructor(private countriesService: CountriesService){}
-
   public countries: Country[] = []
+  initialValue: string = ''
 
   public countriesSubscription: Subscription = new Subscription
   isLoading: boolean = false
+
+  constructor(private countriesService: CountriesService){}
+  ngOnInit(): void {
+    this.countries = this.countriesService.cacheStore.byCapital.countries
+    this.initialValue = this.countriesService.cacheStore.byCapital.term
+  }
+
+
 
   searchByCapital(term: string){
     this.isLoading = true

@@ -13,6 +13,9 @@ export class SearchBoxComponent {
 
   debounceSubscription: Subscription = new Subscription()
 
+  @Input()
+  initialValue: string = ''
+
   ngOnInit(): void {
     this.debounceSubscription = this.debouncer
     .pipe(
